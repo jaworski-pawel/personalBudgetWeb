@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Budżet domowy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Aplikcja internetowa do zarządzania domowym budżetem.">
+    <meta name="keywords" content="budżet, finanse, pieniądze, zarządzanie, ekonomia">
+    <meta name="author" content="Paweł Jaworski">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header">
+                <h1>Budżet domowy</h1>
+                <p>Zaplanuj swoje finanse!</p>
+            </div>
+        </header>
+        <div class="content">
+            <div class="addoperation">
+                <form action="mainmenu.html">
+                    <fieldset class="operation">
+                        <legend>Dodaj przychód:</legend>
+                        <label>Kwota: <input type="text" name="amount" value="0"></label><br>
+                        <label>Data: <input type="date" id="date" name="date" value="0"></label><br>
+                        <label>Kategoria: 
+                            <select name="category">
+                                <option value="salary">Wynagrodzenie</option>
+                                <option value="interest">Odsetki bankowe</option>
+                                <option value="sale">Sprzedaż na Allegro</option>
+                                <option value="others">Inne</option>
+                            </select>
+                        </label><br>
+                        <label>Komentarz: <textarea></textarea></label><br>
+                        <div class="buttons">
+                            <input type="submit" value="Dodaj">
+                            <input type="submit" value="Anuluj">
+                        </div>
+                    </fieldset>
+                  </form>
+            </div>
+        </div>
+        <footer>
+            <div class="footer">
+                <p>&copy; Paweł Jaworski 2018</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
