@@ -1,73 +1,77 @@
 <!DOCTYPE html>
-<html lang="pl">
-<head>
+<html lang="pl_PL">
+  <head>
     <meta charset="utf-8">
-    <title>Budżet domowy</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Aplikcja internetowa do zarządzania domowym budżetem.">
     <meta name="keywords" content="budżet, finanse, pieniądze, zarządzanie, ekonomia">
     <meta name="author" content="Paweł Jaworski">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Budżet domowy</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet"> 
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <div class="header">
-                <h1>Budżet domowy</h1>
-                <p>Zaplanuj swoje finanse!</p>
-            </div>
-        </header>
-        <div class="content">
-            <div class="addoperation">
-                <form action="mainmenu.html">
-                    <fieldset class="operation">
-                        <legend>Dodaj wydatek:</legend>
-                        <label>Kwota: <input type="text" name="amount" value="0"></label><br>
-                        <label>Data: <input type="date" id="date" name="date"></label><br>
-                        <label>Sposób płatności: 
-                                <select name="pay">
-                                    <option value="cash">Gotówka</option>
-                                    <option value="debetcard">Karta debetowa</option>
-                                    <option value="creditcard">Karta kredytowa</option>
-                                </select>
-                            </label><br>
-                        <label>Kategoria: 
-                            <select name="category">
-                                <option value="food">Jedzenie</option>
-                                <option value="apartament">Mieszkanie</option>
-                                <option value="transport">Transport</option>
-                                <option value="communication">Telekomunikacja</option>
-                                <option value="healthcare">Opieka zdrowotna</option>
-                                <option value="clothes">Ubrania</option>
-                                <option value="hygiene">Higiena</option>
-                                <option value="children">Dzieci</option>
-                                <option value="entertaiment">Rozrywka</option>
-                                <option value="tour">Wycieczko</option>
-                                <option value="training">Szkolenia</option>
-                                <option value="books">Książki</option>
-                                <option value="savings">Oszczędności</option>
-                                <option value="pension">Na złotą jesień, czyli emeryturę</option>
-                                <option value="debtrepayment">Spłata długów</option>
-                                <option value="donation">Darowizna</option>
-                                <option value="others">Inne wydatki</option>
-                            </select>
-                        </label><br>
-                        <label>Komentarz: <textarea></textarea></label><br>
-                        <div class="buttons">
-                            <input type="submit" value="Dodaj">
-                            <input type="submit" value="Anuluj">
-                        </div>
-                    </fieldset>
-                  </form>
-            </div>
+      <header>
+        <div class="page-header text-center">
+          <h1>Budżet domowy</h1>
+          <p>Zaplanuj swoje finanse!</p>
         </div>
-        <footer>
-            <div class="footer">
-                <p>&copy; Paweł Jaworski 2018</p>
-            </div>
-        </footer>
+      </header>
+      <div class="content">
+          <div class="addoperation col-sm-offset-3 col-sm-6">
+            <form action="mainmenu.html">
+              <fieldset class="operation">
+                  <legend>Dodaj wydatek:</legend>
+                  <label for="amount">Kwota:</label>
+                  <input type="text" id="amount" name="amount" value="0" class="form-control">
+                  <label for="date">Data: </label>
+                  <input type="date" id="date" name="date" class="form-control">
+                  <label for="pay">Sposób płatności: </label>
+                  <select id="pay" name="pay" class="form-control">
+                      <option value="cash">Gotówka</option>
+                      <option value="debetcard">Karta debetowa</option>
+                      <option value="creditcard">Karta kredytowa</option>
+                  </select>
+                  <label for="category">Kategoria: </label>
+                  <select id="category" name="category" class="form-control">
+                      <option value="food">Jedzenie</option>
+                      <option value="apartament">Mieszkanie</option>
+                      <option value="transport">Transport</option>
+                      <option value="communication">Telekomunikacja</option>
+                      <option value="healthcare">Opieka zdrowotna</option>
+                      <option value="clothes">Ubrania</option>
+                      <option value="hygiene">Higiena</option>
+                      <option value="children">Dzieci</option>
+                      <option value="entertaiment">Rozrywka</option>
+                      <option value="tour">Wycieczko</option>
+                      <option value="training">Szkolenia</option>
+                      <option value="books">Książki</option>
+                      <option value="savings">Oszczędności</option>
+                      <option value="pension">Na złotą jesień, czyli emeryturę</option>
+                      <option value="debtrepayment">Spłata długów</option>
+                      <option value="donation">Darowizna</option>
+                      <option value="others">Inne wydatki</option>
+                  </select>
+                  <label for="comment">Komentarz: </label>
+                  <textarea id="comment" class="form-control"></textarea>
+                  <div class="buttons text-center">
+                      <button type="submit" class="btn btn-default btn-lg">Dodaj</button>
+                      <button type="submit" class="btn btn-default btn-lg">Anuluj</button>
+                  </div>
+              </fieldset>
+            </form>
+          </div>
+      </div>
     </div>
-</body>
+    <footer>
+        <div class="footer text-center">
+            <p>&copy; Paweł Jaworski 2018</p>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  </body>
 </html>
