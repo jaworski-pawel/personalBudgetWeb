@@ -1,3 +1,15 @@
+<?php
+
+	session_start();
+	
+	if ((isset($_SESSION['is_loged_in'])) && ($_SESSION['is_loged_in']==true))
+	{
+		header('Location: mainmenu.php');
+		exit();
+	}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pl_PL">
   <head>
