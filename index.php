@@ -34,8 +34,8 @@
       </header>
       <div class="content">
           <div class="loginmenu text-center col-sm-offset-4 col-sm-4">
-              <a href="register.html"><button type="button" class="btn btn-default btn-lg btn-block">Rejestracja</button></a>
-              <a href="login.html"><button type="button" class="btn btn-default btn-lg btn-block">Logowanie</button></a>
+              <a href="register.php"><button type="button" class="btn btn-default btn-lg btn-block">Rejestracja</button></a>
+              <a href="login.php"><button type="button" class="btn btn-default btn-lg btn-block">Logowanie</button></a>
           </div>
       </div>
     </div>
