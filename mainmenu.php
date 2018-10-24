@@ -1,3 +1,15 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['user_logged_in']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+	
+?>
+
 <!DOCTYPE html>
 <html lang="pl_PL">
   <head>
@@ -26,7 +38,7 @@
               <a href="addexpense.html"><button type="button" class="btn btn-default btn-lg btn-block">Dodaj wydatek</button></a>
               <a href="showbalance.html"><button type="button" class="btn btn-default btn-lg btn-block">Przeglądaj bilans</button></a>
               <a href="mainmenu.html"><button type="button" class="btn btn-default btn-lg btn-block">Ustawienia</button></a>
-              <a href="index.html"><button type="button" class="btn btn-default btn-lg btn-block">Wyloguj się</button></a>
+              <a href="logout.php"><button type="button" class="btn btn-default btn-lg btn-block">Wyloguj się</button></a>
           </div>
       </div>
     </div>
