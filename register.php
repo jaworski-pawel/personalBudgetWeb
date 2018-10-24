@@ -18,7 +18,7 @@
 		if (ctype_alnum($login)==false)
 		{
 			$successful_validation=false;
-			$_SESSION['e_login']="Login może składać się tylko z liter i cyfr (bez polskich znaków)";
+			$_SESSION['e_login']="Login może składać się tylko z liter i cyfr (bez polskich znaków)!";
 		}
 		
 		// E-mail validation
@@ -107,8 +107,8 @@
 		}
 		catch(Exception $e)
 		{
-			echo '<span style="color:red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
-			echo '<br />Informacja developerska: '.$e;
+			echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</div>';
+			//echo '<br />Informacja developerska: '.$e;
 		}
 		
 	}
@@ -163,7 +163,7 @@
 				}
 			  ?>
               <input type="password" class="form-control input-lg" id="passwordinput" placeholder="powtórz hasło" name="password2">
-              <input type="submit" class="btn btn-default btn-lg" value="Zarejestruj się">
+              <button type="submit" class="btn btn-default btn-lg">Zarejestruj się</button>
             </form>
           </div>
       </div>
