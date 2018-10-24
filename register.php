@@ -62,27 +62,27 @@
 			else
 			{
 				// Email exists?
-				$rezultat = $db_connection->query("SELECT id FROM users WHERE email='$email'");
+				$query_result = $db_connection->query("SELECT id FROM users WHERE email='$email'");
 				
-				if (!$rezultat) throw new Exception($db_connection->error);
+				if (!$query_result) throw new Exception($db_connection->error);
 				
-				$ile_takich_maili = $rezultat->num_rows;
-				if($ile_takich_maili>0)
+				$number_of_users = $query_result->num_rows;
+				if($number_of_users > 0)
 				{
 					$successful_validation=false;
 					$_SESSION['e_email']="Istnieje już konto przypisane do tego adresu e-mail!";
 				}		
 
 				// Login exists?
-				$rezultat = $db_connection->query("SELECT id FROM users WHERE username='$login'");
+				$query_result = $db_connection->query("SELECT id FROM users WHERE username='$login'");
 				
-				if (!$rezultat) throw new Exception($polaczenie->error);
+				if (!$query_result) throw new Exception($db_connection->error);
 				
-				$ile_takich_nickow = $rezultat->num_rows;
-				if($ile_takich_nickow>0)
+				$number_of_users = $query_result->num_rows;
+				if($number_of_users > 0)
 				{
 					$successful_validation=false;
-					$_SESSION['e_login']="Istnieje już gracz o takim nicku! Wybierz inny.";
+					$_SESSION['e_login']="Istnieje już użytkownik o takim loginie! Wybierz inny.";
 				}
 				
 				if ($successful_validation==true)
