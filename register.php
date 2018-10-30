@@ -9,7 +9,7 @@
 		// Login validation
 		$login = $_POST['login'];
 		
-		if ((strlen($login)<3) || (strlen($login)>20))
+		if ((strlen($login) < 3) || (strlen($login) > 20))
 		{
 			$successful_validation=false;
 			$_SESSION['e_login']="Login musi posiadać od 3 do 20 znaków!";

@@ -1,3 +1,46 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['user_logged_in'])) {
+		header('Location: index.php');
+		exit();
+  }
+  
+
+  if (isset($_POST['amount'])) {
+    $succesful_validation = true;
+
+    // Amount validation
+
+    $amount = $_POST['amount'];
+
+    if ((!(preg_match('/^[0-9\+]{1,20}$/', $amount))) && (!(preg_match('/^[0-9\+]{1,20}+\.+[0-9\+]{1,2}$/', $amount))) && (!(preg_match('/^[0-9\+]{1,20}+\,+[0-9\+]{1,2}$/', $amount)))) {
+      $succesful_validation = false;
+      $_SESSION['e_amount'] = "Niepoprawny format kwoty!";
+    }
+    else {
+      if (preg_match('/^[0-9\+]{1,20}+\,+[0-9\+]{1,2}$/', $amount)) {
+        $amount = str_replace(",",".",$amount);
+      }
+    }
+
+    // Date validation
+
+
+
+    // Comment validation
+    $comment = $_POST['comment'];
+
+    if ((strlen($comment) < 2) || (strlen($comment) >100)) {
+      $succesful_validation = false;
+      $_SESSION['e_comment'] = "Komentarz powienien zawierać od 2 do 100 znaków!";
+    }
+
+  }
+	
+?>
+
 <!DOCTYPE html>
 <html lang="pl_PL">
   <head>
@@ -22,11 +65,17 @@
       </header>
       <div class="content">
           <div class="addoperation col-sm-offset-3 col-sm-6">
-            <form action="mainmenu.html">
+            <form method="post">
               <fieldset class="operation">
                   <legend>Dodaj wydatek:</legend>
                   <label for="amount">Kwota:</label>
-                  <input type="text" id="amount" name="amount" value="0" class="form-control">
+                  <input type="text" id="amount" name="amount" class="form-control">
+                  <?php
+			            	if (isset($_SESSION['e_amount'])) {
+				            	echo '<div class="error">'.$_SESSION['e_amount'].'</div>';
+					            unset($_SESSION['e_amount']);
+				            }
+			            ?>
                   <label for="date">Data: </label>
                   <input type="date" id="date" name="date" class="form-control">
                   <label for="pay">Sposób płatności: </label>
@@ -56,7 +105,13 @@
                       <option value="others">Inne wydatki</option>
                   </select>
                   <label for="comment">Komentarz: </label>
-                  <textarea id="comment" class="form-control"></textarea>
+                  <textarea id="comment" class="form-control" name="comment"></textarea>
+                  <?php
+			            	if (isset($_SESSION['e_comment'])) {
+				            	echo '<div class="error">'.$_SESSION['e_comment'].'</div>';
+					            unset($_SESSION['e_comment']);
+				            }
+			            ?>
                   <div class="buttons text-center">
                       <button type="submit" class="btn btn-default btn-lg">Dodaj</button>
                       <button type="submit" class="btn btn-default btn-lg">Anuluj</button>

@@ -34,10 +34,10 @@
       </header>
       <div class="content">
           <div class="mainmenu text-center col-sm-offset-4 col-sm-4">
-              <a href="addincome.html"><button type="button" class="btn btn-default btn-lg btn-block">Dodaj przychód</button></a>
-              <a href="addexpense.html"><button type="button" class="btn btn-default btn-lg btn-block">Dodaj wydatek</button></a>
-              <a href="showbalance.html"><button type="button" class="btn btn-default btn-lg btn-block">Przeglądaj bilans</button></a>
-              <a href="mainmenu.html"><button type="button" class="btn btn-default btn-lg btn-block">Ustawienia</button></a>
+              <a href="addincome.php"><button type="button" class="btn btn-default btn-lg btn-block">Dodaj przychód</button></a>
+              <a href="addexpense.php"><button type="button" class="btn btn-default btn-lg btn-block">Dodaj wydatek</button></a>
+              <a href="showbalance.php"><button type="button" class="btn btn-default btn-lg btn-block">Przeglądaj bilans</button></a>
+              <a href="mainmenu.php"><button type="button" class="btn btn-default btn-lg btn-block">Ustawienia</button></a>
               <a href="logout.php"><button type="button" class="btn btn-default btn-lg btn-block">Wyloguj się</button></a>
           </div>
       </div>
