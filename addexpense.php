@@ -15,19 +15,57 @@
 
     $amount = $_POST['amount'];
 
-    if ((!(preg_match('/^[0-9\+]{1,20}$/', $amount))) && (!(preg_match('/^[0-9\+]{1,20}+\.+[0-9\+]{1,2}$/', $amount))) && (!(preg_match('/^[0-9\+]{1,20}+\,+[0-9\+]{1,2}$/', $amount)))) {
+    if ((!(preg_match('/^[0-9]{1,20}$/', $amount))) && (!(preg_match('/^[0-9]{1,20}+\.+[0-9]{1,2}$/', $amount))) && (!(preg_match('/^[0-9\+]{1,20}+\,+[0-9\+]{1,2}$/', $amount)))) {
       $succesful_validation = false;
       $_SESSION['e_amount'] = "Niepoprawny format kwoty!";
     }
     else {
-      if (preg_match('/^[0-9\+]{1,20}+\,+[0-9\+]{1,2}$/', $amount)) {
+      if (preg_match('/^[0-9]{1,20}+\,+[0-9]{1,2}$/', $amount)) {
         $amount = str_replace(",",".",$amount);
       }
     }
 
     // Date validation
+    
+    $date = $_POST['date'];
 
-
+    if(!(preg_match('/^[0-9]{4}+\-+[0-9]{1,2}+\-+[0-9]{1,2}$/', $date))) {
+      $succesful_validation = false;
+      $_SESSION['e_date'] = "Data musi być w formacie: RRRR-MM-DD";
+    }
+    else {
+      $year = substr($date, 0, 4);
+      $month = substr($date, 5, 2);
+      $day = substr($date, 8, 2);
+      
+      if(!checkdate($month, $day, $year)) {
+        $succesful_validation = false;
+        $_SESSION['e_date'] = "Niepoprawna data!";
+      }
+      else {
+        $currentdate = date('Y-m-d');
+        $currentyear = substr($currentdate, 0, 4);
+        $currentmonth = substr($currentdate, 5, 2);
+        $currentday = substr($currentdate, 8, 2);
+      
+        if($year > $currentyear) {
+          $succesful_validation = false;
+          $_SESSION['e_date'] = "Data nie może być z przyszłości!";
+        }
+        elseif($year == $currentyear) {
+          if($month > $currentmonth) {
+            $succesful_validation = false;
+            $_SESSION['e_date'] = "Data nie może być z przyszłości!";
+          }
+          elseif($month = $currentmonth) {
+            if($day > $currentday) {
+              $succesful_validation = false;
+              $_SESSION['e_date'] = "Data nie może być z przyszłości!";
+            }
+          }
+        }
+      }
+    }
 
     // Comment validation
     $comment = $_POST['comment'];
@@ -78,6 +116,12 @@
 			            ?>
                   <label for="date">Data: </label>
                   <input type="date" id="date" name="date" class="form-control">
+                  <?php
+			            	if (isset($_SESSION['e_date'])) {
+				            	echo '<div class="error">'.$_SESSION['e_date'].'</div>';
+					            unset($_SESSION['e_date']);
+				            }
+			            ?>
                   <label for="pay">Sposób płatności: </label>
                   <select id="pay" name="pay" class="form-control">
                       <option value="cash">Gotówka</option>
@@ -114,7 +158,7 @@
 			            ?>
                   <div class="buttons text-center">
                       <button type="submit" class="btn btn-default btn-lg">Dodaj</button>
-                      <button type="submit" class="btn btn-default btn-lg">Anuluj</button>
+                      <a href="mainmenu.php"><button type="button" class="btn btn-default btn-lg">Anuluj</button></a>
                   </div>
               </fieldset>
             </form>
