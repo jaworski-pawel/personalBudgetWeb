@@ -89,16 +89,70 @@
 				{
 					// Successful validation, register
 					
-					if ($db_connection->query("INSERT INTO users VALUES (NULL, '$login', '$password_hash', '$email')"))
-					{
-						$_SESSION['udanarejestracja']=true;
-						header('Location: welcome.php');
+					if ($db_connection->query("INSERT INTO users VALUES (NULL, '$login', '$password_hash', '$email')")) {
+						if ($query_result = $db_connection->query(sprintf("SELECT * FROM users WHERE username='%s'", mysqli_real_escape_string($db_connection, $login)))) {
+          $number_of_users = $query_result->num_rows;
+          if($number_of_users > 0) {
+            $user_data = $query_result->fetch_assoc();
+            $user_id = $user_data['id'];
+            $query_result->free_result();
 					}
-					else
-					{
+						echo "Wynik to: $user_id";
+							if ($db_connection->query("ALTER TABLE payment_methods_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id")) {
+								if ($db_connection->query("INSERT INTO payment_methods_assigned_to_users (id, user_id, name) SELECT id, user_id, name FROM payment_methods_default")) {
+									if ($db_connection->query("ALTER TABLE payment_methods_default DROP user_id")) {
+										if ($db_connection->query("ALTER TABLE expenses_category_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id")) {
+											if ($db_connection->query("INSERT INTO  expenses_category_assigned_to_users (id, user_id, name) SELECT id, user_id, name FROM expenses_category_default")) {
+												if ($db_connection->query("ALTER TABLE expenses_category_default DROP user_id")) {
+													if ($db_connection->query("ALTER TABLE incomes_category_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id")) {
+														if ($db_connection->query("INSERT INTO  incomes_category_assigned_to_users (id, user_id, name) SELECT id, user_id, name FROM incomes_category_default")) {
+															if ($db_connection->query("ALTER TABLE incomes_category_default DROP user_id")) {
+																$_SESSION['udanarejestracja']=true;
+																header('Location: welcome.php');
+															}
+															else {
+																throw new Exception($db_connection->error);
+															}
+														}
+														else {
+															throw new Exception($db_connection->error);
+														}
+													}
+													else {
+														throw new Exception($db_connection->error);
+													}
+												}
+												else {
+													throw new Exception($db_connection->error);
+												}
+											}
+											else {
+												throw new Exception($db_connection->error);
+											}
+										}
+										else {
+											throw new Exception($db_connection->error);
+										}
+									}
+									else {
+										throw new Exception($db_connection->error);
+									}
+								}
+								else {
+									throw new Exception($db_connection->error);
+								}
+							}
+							else {
+								throw new Exception($db_connection->error);
+							}
+						}
+						else {
+							throw new Exception($db_connection->error);
+						}
+					}
+					else {
 						throw new Exception($db_connection->error);
 					}
-					
 				}
 				
 				$db_connection->close();
@@ -108,7 +162,7 @@
 		catch(Exception $e)
 		{
 			echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</div>';
-			//echo '<br />Informacja developerska: '.$e;
+			echo '<br />Informacja developerska: '.$e;
 		}
 		
 	}
