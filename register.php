@@ -162,7 +162,7 @@
 		catch(Exception $e)
 		{
 			echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</div>';
-			echo '<br />Informacja developerska: '.$e;
+			//echo '<br />Informacja developerska: '.$e;
 		}
 		
 	}

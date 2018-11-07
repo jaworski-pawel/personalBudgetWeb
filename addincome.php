@@ -1,3 +1,84 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['user_logged_in'])) {
+		header('Location: index.php');
+		exit();
+  }
+  
+
+  if (isset($_POST['amount'])) {
+    $succesful_validation = true;
+
+    // Amount validation
+
+    $amount = $_POST['amount'];
+
+    if ((!(preg_match('/^[0-9]{1,20}$/', $amount))) && (!(preg_match('/^[0-9]{1,20}+\.+[0-9]{1,2}$/', $amount))) && (!(preg_match('/^[0-9\+]{1,20}+\,+[0-9\+]{1,2}$/', $amount)))) {
+      $succesful_validation = false;
+      $_SESSION['e_amount'] = "Niepoprawny format kwoty!";
+    }
+    else {
+      if (preg_match('/^[0-9]{1,20}+\,+[0-9]{1,2}$/', $amount)) {
+        $amount = str_replace(",",".",$amount);
+      }
+    }
+
+    // Date validation
+    
+    $date = $_POST['date'];
+
+    if(!(preg_match('/^[0-9]{4}+\-+[0-9]{1,2}+\-+[0-9]{1,2}$/', $date))) {
+      $succesful_validation = false;
+      $_SESSION['e_date'] = "Data musi być w formacie: RRRR-MM-DD";
+    }
+    else {
+      $year = substr($date, 0, 4);
+      $month = substr($date, 5, 2);
+      $day = substr($date, 8, 2);
+      
+      if(!checkdate($month, $day, $year)) {
+        $succesful_validation = false;
+        $_SESSION['e_date'] = "Niepoprawna data!";
+      }
+      else {
+        $currentdate = date('Y-m-d');
+        $currentyear = substr($currentdate, 0, 4);
+        $currentmonth = substr($currentdate, 5, 2);
+        $currentday = substr($currentdate, 8, 2);
+      
+        if($year > $currentyear) {
+          $succesful_validation = false;
+          $_SESSION['e_date'] = "Data nie może być z przyszłości!";
+        }
+        elseif($year == $currentyear) {
+          if($month > $currentmonth) {
+            $succesful_validation = false;
+            $_SESSION['e_date'] = "Data nie może być z przyszłości!";
+          }
+          elseif($month = $currentmonth) {
+            if($day > $currentday) {
+              $succesful_validation = false;
+              $_SESSION['e_date'] = "Data nie może być z przyszłości!";
+            }
+          }
+        }
+      }
+    }
+
+    // Comment validation
+    $comment = $_POST['comment'];
+
+    if ((strlen($comment) < 2) || (strlen($comment) >100)) {
+      $succesful_validation = false;
+      $_SESSION['e_comment'] = "Komentarz powienien zawierać od 2 do 100 znaków!";
+    }
+
+  }
+	
+?>
+
 <!DOCTYPE html>
 <html lang="pl_PL">
   <head>
@@ -24,24 +105,42 @@
           <div class="addoperation col-sm-offset-3 col-sm-6">
             <form action="mainmenu.html">
                 <fieldset class="operation">
-                    <legend>Dodaj przychód:</legend>
-                    <label for="amount">Kwota: </label>
-                    <input type="text" id="amount" name="amount" value="0" class="form-control">
-                    <label for="date">Data: </label>
-                    <input type="date" id="date" name="date" class="form-control">
-                    <label for="category">Kategoria: </label>
-                    <select id="category" name="category" class="form-control">
-                      <option value="salary">Wynagrodzenie</option>
-                      <option value="interest">Odsetki bankowe</option>
-                      <option value="sale">Sprzedaż na Allegro</option>
-                      <option value="others">Inne</option>
-                    </select>
-                    <label for="comment">Komentarz: </label>
-                    <textarea id="comment" class="form-control"></textarea>
-                    <div class="buttons text-center">
-                      <button type="submit" class="btn btn-default btn-lg">Dodaj</button>
-                      <button type="submit" class="btn btn-default btn-lg">Anuluj</button>
-                    </div>
+                  <legend>Dodaj przychód:</legend>
+                  <label for="amount">Kwota:</label>
+                  <input type="text" id="amount" name="amount" class="form-control">
+                  <?php
+                    if (isset($_SESSION['e_amount'])) {
+                      echo '<div class="error">'.$_SESSION['e_amount'].'</div>';
+                      unset($_SESSION['e_amount']);
+                    }
+                  ?>
+                  <label for="date">Data: </label>
+                  <input type="date" id="date" name="date" class="form-control">
+                  <?php
+                    if (isset($_SESSION['e_date'])) {
+                      echo '<div class="error">'.$_SESSION['e_date'].'</div>';
+                      unset($_SESSION['e_date']);
+                    }
+                  ?>
+                  <label for="category">Kategoria: </label>
+                  <select id="category" name="category" class="form-control">
+                    <option value="salary">Wynagrodzenie</option>
+                    <option value="interest">Odsetki bankowe</option>
+                    <option value="sale">Sprzedaż na Allegro</option>
+                    <option value="others">Inne</option>
+                  </select>
+                  <label for="comment">Komentarz: </label>
+                  <textarea id="comment" class="form-control" name="comment"></textarea>
+                  <?php
+                    if (isset($_SESSION['e_comment'])) {
+                      echo '<div class="error">'.$_SESSION['e_comment'].'</div>';
+                      unset($_SESSION['e_comment']);
+                    }
+                  ?>
+                  <div class="buttons text-center">
+                    <button type="submit" class="btn btn-default btn-lg">Dodaj</button>
+                    <a href="mainmenu.php"><button type="button" class="btn btn-default btn-lg">Anuluj</button></a>
+                  </div>
                 </fieldset>
               </form>
         </div>
