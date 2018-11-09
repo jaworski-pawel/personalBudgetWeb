@@ -97,6 +97,9 @@
             					$_SESSION['user_id'] = $user_data['id'];
 								$query_result->free_result();
 							}
+							else {
+								echo '<div class="error">Błąd odczytu ID z bazy danych. Skontaktuj się z twórcą strony.</div>';
+							}
 							if ($db_connection->query("ALTER TABLE payment_methods_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id")) {
 								if ($db_connection->query("INSERT INTO payment_methods_assigned_to_users (id, user_id, name) SELECT id, user_id, name FROM payment_methods_default")) {
 									if ($db_connection->query("ALTER TABLE payment_methods_default DROP user_id")) {

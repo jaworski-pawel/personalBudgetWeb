@@ -130,24 +130,54 @@
                   </select>
                   <label for="category">Kategoria: </label>
                   <select id="category" name="category" class="form-control">
-                      <option value="food">Jedzenie</option>
-                      <option value="apartament">Mieszkanie</option>
-                      <option value="transport">Transport</option>
-                      <option value="communication">Telekomunikacja</option>
-                      <option value="healthcare">Opieka zdrowotna</option>
-                      <option value="clothes">Ubrania</option>
-                      <option value="hygiene">Higiena</option>
-                      <option value="children">Dzieci</option>
-                      <option value="entertaiment">Rozrywka</option>
-                      <option value="tour">Wycieczko</option>
-                      <option value="training">Szkolenia</option>
-                      <option value="books">Książki</option>
-                      <option value="savings">Oszczędności</option>
-                      <option value="pension">Na złotą jesień, czyli emeryturę</option>
-                      <option value="debtrepayment">Spłata długów</option>
-                      <option value="donation">Darowizna</option>
-                      <option value="others">Inne wydatki</option>
+                    <?php
+                      require_once "connect.php";
+                      mysqli_report(MYSQLI_REPORT_STRICT);
+                        
+                      try 
+                      {
+                        $db_connection = new mysqli($host, $db_user, $db_password, $db_name);
+                        
+                        if ($db_connection->connect_errno!=0)
+                        {
+                          throw new Exception(mysqli_connect_errno());
+                        }
+                        else
+                        {
+                          if ($query_result = $db_connection->query(sprintf("SELECT * FROM expenses_category_assigned_to_users WHERE user_id='%s'", mysqli_real_escape_string($db_connection, $_SESSION['id'])))) {
+                            $number_of_categories = $query_result->num_rows;
+                            if($number_of_categories > 0) {
+                              while($category = $query_result->fetch_assoc()) {
+                                echo '<option value="'.$category["id"].'">'.$category["name"].'</option>';
+                              }
+                            }
+                            else {
+                              $succesful_validation = false;
+                              $_SESSION['e_category'] = "Nie udało się pobrać kategorii z bazy danych";
+                            }
+                            
+                          }
+                          else
+                          {
+                            throw new Exception($db_connection->error);
+                          }
+                          
+                          $db_connection->close();
+                        }
+                      }
+                      catch(Exception $e)
+                      {
+                        echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o wizytę w innym terminie!</div>';
+                        //echo '<br />Informacja developerska: '.$e;
+                      }
+                    ?>
                   </select>
+                  <?php
+                    if (isset($_SESSION['e_category'])) {
+                      echo '<div class="error">'.$_SESSION['e_category'].'</div>';
+                      unset($_SESSION['e_']);
+                    }
+                  ?>
                   <label for="comment">Komentarz: </label>
                   <textarea id="comment" class="form-control" name="comment"></textarea>
                   <?php
