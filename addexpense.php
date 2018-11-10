@@ -124,10 +124,54 @@
 			            ?>
                   <label for="pay">Sposób płatności: </label>
                   <select id="pay" name="pay" class="form-control">
-                      <option value="cash">Gotówka</option>
-                      <option value="debetcard">Karta debetowa</option>
-                      <option value="creditcard">Karta kredytowa</option>
+                  <?php
+                      require_once "connect.php";
+                      mysqli_report(MYSQLI_REPORT_STRICT);
+                        
+                      try 
+                      {
+                        $db_connection = new mysqli($host, $db_user, $db_password, $db_name);
+                        
+                        if ($db_connection->connect_errno!=0)
+                        {
+                          throw new Exception(mysqli_connect_errno());
+                        }
+                        else
+                        {
+                          if ($query_result = $db_connection->query(sprintf("SELECT * FROM payment_methods_assigned_to_users WHERE user_id='%s'", mysqli_real_escape_string($db_connection, $_SESSION['id'])))) {
+                            $number_of_payment_methods = $query_result->num_rows;
+                            if($number_of_payment_methods > 0) {
+                              while($payment_methods = $query_result->fetch_assoc()) {
+                                echo '<option value="'.$payment_methods["id"].'">'.$payment_methods["name"].'</option>';
+                              }
+                            }
+                            else {
+                              $succesful_validation = false;
+                              $_SESSION['e_payment_methods'] = "Nie udało się pobrać metod płatności z bazy danych";
+                            }
+                            
+                          }
+                          else
+                          {
+                            throw new Exception($db_connection->error);
+                          }
+                          
+                          $db_connection->close();
+                        }
+                      }
+                      catch(Exception $e)
+                      {
+                        echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o wizytę w innym terminie!</div>';
+                        //echo '<br />Informacja developerska: '.$e;
+                      }
+                    ?>
                   </select>
+                  <?php
+                    if (isset($_SESSION['e_payment_methods'])) {
+                      echo '<div class="error">'.$_SESSION['e_payment_methods'].'</div>';
+                      unset($_SESSION['e_payment_methods']);
+                    }
+                  ?>
                   <label for="category">Kategoria: </label>
                   <select id="category" name="category" class="form-control">
                     <?php
@@ -175,7 +219,7 @@
                   <?php
                     if (isset($_SESSION['e_category'])) {
                       echo '<div class="error">'.$_SESSION['e_category'].'</div>';
-                      unset($_SESSION['e_']);
+                      unset($_SESSION['e_category']);
                     }
                   ?>
                   <label for="comment">Komentarz: </label>
