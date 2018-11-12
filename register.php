@@ -88,29 +88,45 @@
 				if ($successful_validation==true)
 				{
 					// Successful validation, register
-					
-					if ($db_connection->query("INSERT INTO users VALUES (NULL, '$login', '$password_hash', '$email')")) {
+					$create_user ="INSERT INTO users VALUES (NULL, '$login', '$password_hash', '$email')";
+
+
+					if ($db_connection->query("$create_user")) {
 						if ($query_result = $db_connection->query(sprintf("SELECT * FROM users WHERE username='%s'", mysqli_real_escape_string($db_connection, $login)))) {
          					$number_of_users = $query_result->num_rows;
           					if($number_of_users > 0) {
             					$user_data = $query_result->fetch_assoc();
-            					$_SESSION['user_id'] = $user_data['id'];
+								$_SESSION['user_id'] = $user_data['id'];
+								$user_id = $_SESSION['user_id'];
 								$query_result->free_result();
-							}
-							else {
-								echo '<div class="error">Błąd odczytu ID z bazy danych. Skontaktuj się z twórcą strony.</div>';
-							}
-							if ($db_connection->query("ALTER TABLE payment_methods_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id")) {
-								if ($db_connection->query("INSERT INTO payment_methods_assigned_to_users (id, user_id, name) SELECT id, user_id, name FROM payment_methods_default")) {
-									if ($db_connection->query("ALTER TABLE payment_methods_default DROP user_id")) {
-										if ($db_connection->query("ALTER TABLE expenses_category_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id")) {
-											if ($db_connection->query("INSERT INTO  expenses_category_assigned_to_users (id, user_id, name) SELECT id, user_id, name FROM expenses_category_default")) {
-												if ($db_connection->query("ALTER TABLE expenses_category_default DROP user_id")) {
-													if ($db_connection->query("ALTER TABLE incomes_category_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id")) {
-														if ($db_connection->query("INSERT INTO  incomes_category_assigned_to_users (id, user_id, name) SELECT id, user_id, name FROM incomes_category_default")) {
-															if ($db_connection->query("ALTER TABLE incomes_category_default DROP user_id")) {
-																$_SESSION['udanarejestracja']=true;
-																header('Location: welcome.php');
+
+								$add_user_id_in_payment_methods_default = "ALTER TABLE payment_methods_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id";
+								$copy_payment_methods_default = "INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT user_id, name FROM payment_methods_default";
+								$drop_user_id_from_payment_methods = "ALTER TABLE payment_methods_default DROP user_id";
+
+								$add_user_id_in_expenses_category_default = "ALTER TABLE expenses_category_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id";
+								$copy_expenses_category_default = "INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT user_id, name FROM expenses_category_default";
+								$drop_user_id_from_expenses_category = "ALTER TABLE expenses_category_default DROP user_id";
+
+								$add_user_id_in_incomes_category_default = "ALTER TABLE incomes_category_default ADD user_id INT(11) NOT NULL DEFAULT '$user_id' AFTER id";
+								$copy_incomes_category_default = "INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT user_id, name FROM incomes_category_default";
+								$drop_user_id_from_incomes_category = "ALTER TABLE incomes_category_default DROP user_id";
+
+								if ($db_connection->query("$add_user_id_in_payment_methods_default")) {
+									if ($db_connection->query("$copy_payment_methods_default")) {
+										if ($db_connection->query("$drop_user_id_from_payment_methods")) {
+											if ($db_connection->query("$add_user_id_in_expenses_category_default")) {
+												if ($db_connection->query("$copy_expenses_category_default")) {
+													if ($db_connection->query("$drop_user_id_from_expenses_category")) {
+														if ($db_connection->query("$add_user_id_in_incomes_category_default")) {
+															if ($db_connection->query("$copy_incomes_category_default")) {
+																if ($db_connection->query("$drop_user_id_from_incomes_category")) {
+																	$_SESSION['udanarejestracja']=true;
+																	header('Location: welcome.php');
+																}
+																else {
+																	throw new Exception($db_connection->error);
+																}
 															}
 															else {
 																throw new Exception($db_connection->error);
@@ -143,9 +159,10 @@
 								else {
 									throw new Exception($db_connection->error);
 								}
+								
 							}
 							else {
-								throw new Exception($db_connection->error);
+								echo '<div class="error">Błąd odczytu ID z bazy danych. Skontaktuj się z twórcą strony.</div>';
 							}
 						}
 						else {
@@ -155,6 +172,7 @@
 					else {
 						throw new Exception($db_connection->error);
 					}
+							
 				}
 				
 				$db_connection->close();
@@ -164,7 +182,7 @@
 		catch(Exception $e)
 		{
 			echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</div>';
-			//echo '<br />Informacja developerska: '.$e;
+			echo '<br />Informacja developerska: '.$e;
 		}
 		
 	}
