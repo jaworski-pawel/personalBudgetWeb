@@ -2,20 +2,15 @@
 
 	session_start();
 	
-	if (!isset($_SESSION['successful_registration']))
+	if (!isset($_SESSION['successful_operation']))
 	{
 		header('Location: index.php');
 		exit();
 	}
 	else
 	{
-		unset($_SESSION['successful_registration']);
+		unset($_SESSION['successful_operation']);
 	}
-	
-	//Usuwanie błędów rejestracji
-	if (isset($_SESSION['e_login'])) unset($_SESSION['e_login']);
-	if (isset($_SESSION['e_email'])) unset($_SESSION['e_email']);
-	if (isset($_SESSION['e_password'])) unset($_SESSION['e_password']);	
 ?>
 
 <!DOCTYPE html>
@@ -41,9 +36,12 @@
         </div>
       </header>
       <div class="content">
-        <p class="text-center">Dziękujemy za rejestrację, kliknij poniżej aby zalogować się na swoje konto!</p>
+        <p class="text-center">Dodano pomyślnie operację!</p>
         <div class="loginmenu text-center col-sm-offset-4 col-sm-4">
-            <a href="login.php"><button type="button" class="btn btn-default btn-lg btn-block">Logowanie</button></a>
+            <a href="addincome.php"><button type="button" class="btn btn-default btn-lg btn-block">Dodaj przychód</button></a>
+            <a href="addexpense.php"><button type="button" class="btn btn-default btn-lg btn-block">Dodaj wydatek</button></a>
+            <a href="showbalance.php"><button type="button" class="btn btn-default btn-lg btn-block">Przeglądaj bilans</button></a>
+            <a href="mainmenu.php"><button type="button" class="btn btn-default btn-lg btn-block">Menu główne</button></a>
          </div>
       </div>
     </div>

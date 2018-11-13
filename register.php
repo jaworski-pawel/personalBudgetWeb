@@ -121,7 +121,7 @@
 														if ($db_connection->query("$add_user_id_in_incomes_category_default")) {
 															if ($db_connection->query("$copy_incomes_category_default")) {
 																if ($db_connection->query("$drop_user_id_from_incomes_category")) {
-																	$_SESSION['udanarejestracja']=true;
+																	$_SESSION['successful_registration']=true;
 																	header('Location: welcome.php');
 																}
 																else {

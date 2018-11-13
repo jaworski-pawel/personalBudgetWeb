@@ -9,14 +9,14 @@
   
 
   if (isset($_POST['amount'])) {
-    $succesful_validation = true;
+    $successful_validation = true;
 
     // Amount validation
 
     $amount = $_POST['amount'];
 
     if ((!(preg_match('/^[0-9]{1,20}$/', $amount))) && (!(preg_match('/^[0-9]{1,20}+\.+[0-9]{1,2}$/', $amount))) && (!(preg_match('/^[0-9\+]{1,20}+\,+[0-9\+]{1,2}$/', $amount)))) {
-      $succesful_validation = false;
+      $successful_validation = false;
       $_SESSION['e_amount'] = "Niepoprawny format kwoty!";
     }
     else {
@@ -30,7 +30,7 @@
     $date = $_POST['date'];
 
     if(!(preg_match('/^[0-9]{4}+\-+[0-9]{1,2}+\-+[0-9]{1,2}$/', $date))) {
-      $succesful_validation = false;
+      $successful_validation = false;
       $_SESSION['e_date'] = "Data musi być w formacie: RRRR-MM-DD";
     }
     else {
@@ -39,7 +39,7 @@
       $day = substr($date, 8, 2);
       
       if(!checkdate($month, $day, $year)) {
-        $succesful_validation = false;
+        $successful_validation = false;
         $_SESSION['e_date'] = "Niepoprawna data!";
       }
       else {
@@ -49,17 +49,17 @@
         $currentday = substr($currentdate, 8, 2);
       
         if($year > $currentyear) {
-          $succesful_validation = false;
+          $successful_validation = false;
           $_SESSION['e_date'] = "Data nie może być z przyszłości!";
         }
         elseif($year == $currentyear) {
           if($month > $currentmonth) {
-            $succesful_validation = false;
+            $successful_validation = false;
             $_SESSION['e_date'] = "Data nie może być z przyszłości!";
           }
           elseif($month = $currentmonth) {
             if($day > $currentday) {
-              $succesful_validation = false;
+              $successful_validation = false;
               $_SESSION['e_date'] = "Data nie może być z przyszłości!";
             }
           }
@@ -67,14 +67,54 @@
       }
     }
 
+    //Payment method id validation
+    $payment_method_id = $_POST['pay'];
+
+    //Category id validation
+    $category_id = $_POST['category'];
+    
     // Comment validation
     $comment = $_POST['comment'];
 
     if ((strlen($comment) < 2) || (strlen($comment) >100)) {
-      $succesful_validation = false;
+      $successful_validation = false;
       $_SESSION['e_comment'] = "Komentarz powienien zawierać od 2 do 100 znaków!";
     }
 
+    // Adding expense
+
+    require_once "connect.php";
+		mysqli_report(MYSQLI_REPORT_STRICT);
+
+    try {
+			$db_connection = new mysqli($host, $db_user, $db_password, $db_name);
+			if ($db_connection->connect_errno!=0) {
+				throw new Exception(mysqli_connect_errno());
+			}
+			else {
+				if ($successful_validation==true) {
+          $user_id = $_SESSION['id'];
+					$add_expense = "INSERT INTO expenses VALUES (NULL, '$user_id', '$category_id', '$payment_method_id', '$amount', '$date', '$comment')";
+
+					if ($db_connection->query("$add_expense")) {
+            $_SESSION['successful_operation'] = true;
+            header('Location: afteraddingoperation.php');
+					}
+					else {
+						throw new Exception($db_connection->error);
+					}
+							
+				}
+				
+				$db_connection->close();
+			}
+			
+		}
+		catch(Exception $e)
+		{
+			echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</div>';
+			echo '<br />Informacja developerska: '.$e;
+		}
   }
 	
 ?>
@@ -146,7 +186,7 @@
                               }
                             }
                             else {
-                              $succesful_validation = false;
+                              $successful_validation = false;
                               $_SESSION['e_payment_methods'] = "Nie udało się pobrać metod płatności z bazy danych";
                             }
                             
@@ -196,7 +236,7 @@
                               }
                             }
                             else {
-                              $succesful_validation = false;
+                              $successful_validation = false;
                               $_SESSION['e_category'] = "Nie udało się pobrać kategorii z bazy danych";
                             }
                             
