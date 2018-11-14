@@ -67,13 +67,55 @@
       }
     }
 
+    //Category id validation
+    $category_id = $_POST['category'];
+    if(!(preg_match('/^[0-9]$/', $category_id))) {
+      $successful_validation = false;
+      $_SESSION['e_category'] = "Błędna kategoria";
+    }
+
     // Comment validation
     $comment = $_POST['comment'];
 
-    if ((strlen($comment) < 2) || (strlen($comment) > 100)) {
+    if ((strlen($comment) < 2) || (strlen($comment) >100)) {
       $successful_validation = false;
       $_SESSION['e_comment'] = "Komentarz powienien zawierać od 2 do 100 znaków!";
     }
+
+    // Adding expense
+
+    require_once "connect.php";
+		mysqli_report(MYSQLI_REPORT_STRICT);
+
+    try {
+			$db_connection = new mysqli($host, $db_user, $db_password, $db_name);
+			if ($db_connection->connect_errno!=0) {
+				throw new Exception(mysqli_connect_errno());
+			}
+			else {
+				if ($successful_validation==true) {
+          $user_id = $_SESSION['id'];
+					$add_income = "INSERT INTO incomes VALUES (NULL, '$user_id', '$category_id', '$amount', '$date', '$comment')";
+
+					if ($db_connection->query("$add_income")) {
+            $_SESSION['successful_operation'] = true;
+            header('Location: afteraddingoperation.php');
+					}
+					else {
+						throw new Exception($db_connection->error);
+					}
+							
+				}
+				
+				$db_connection->close();
+			}
+			
+		}
+		catch(Exception $e)
+		{
+			echo '<div class="error text-center">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</div>';
+			echo '<br />Informacja developerska: '.$e;
+		}
 
   }
 	
@@ -103,7 +145,7 @@
       </header>
       <div class="content">
           <div class="addoperation col-sm-offset-3 col-sm-6">
-            <form action="mainmenu.html">
+            <form method="post">
                 <fieldset class="operation">
                   <legend>Dodaj przychód:</legend>
                   <label for="amount">Kwota:</label>
