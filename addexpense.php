@@ -69,10 +69,18 @@
 
     //Payment method id validation
     $payment_method_id = $_POST['pay'];
+    if(!(preg_match('/^[0-9]$/', $payment_method_id))) {
+      $successful_validation = false;
+      $_SESSION['e_payment'] = "Błędna forma płatności";
+    }
 
     //Category id validation
     $category_id = $_POST['category'];
-    
+    if(!(preg_match('/^[0-9]$/', $category_id))) {
+      $successful_validation = false;
+      $_SESSION['e_category'] = "Błędna kategoria";
+    }
+
     // Comment validation
     $comment = $_POST['comment'];
 
