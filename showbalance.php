@@ -36,7 +36,7 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                  <li><a href="#">Bieżący miesiąc</a></li>
+                  <li><a href="showbalancefromcurrentmonth.php">Bieżący miesiąc</a></li>
                   <li><a href="#">Poprzedni miesiąc</a></li>
                   <li><a href="#">Bieżący rok</a></li>
                   <li role="separator" class="divider"></li>
@@ -56,6 +56,11 @@
                     <?php
                       require_once "connect.php";
                       mysqli_report(MYSQLI_REPORT_STRICT);
+
+                      if (!isset($_SESSION['start_date'])) {
+                        $_SESSION['start_date'] = "1970-01-01";
+                        $_SESSION['end_date'] = $currentdate = date('Y-m-d');
+                    }
                         
                       try 
                       {
@@ -67,7 +72,12 @@
                         }
                         else
                         {
-                          if ($query_result = $db_connection->query(sprintf("SELECT i.income_comment, c.name AS category, i.date_of_income, i.amount FROM incomes AS i NATURAL JOIN incomes_category_assigned_to_users AS c WHERE user_id='%s'", mysqli_real_escape_string($db_connection, $_SESSION['id'])))) {
+                          $start_date = mysqli_real_escape_string($db_connection, $_SESSION['start_date']);
+                          $end_date = mysqli_real_escape_string($db_connection, $_SESSION['end_date']);
+                          $user_id = mysqli_real_escape_string($db_connection, $_SESSION['id']);
+                          $get_incomes = "SELECT i.income_comment, c.name AS category, i.date_of_income, i.amount FROM incomes AS i NATURAL JOIN incomes_category_assigned_to_users AS c WHERE (i.date_of_income BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id' ";
+                          
+                          if ($query_result = $db_connection->query("$get_incomes")) {
                             $number_of_incomes = $query_result->num_rows;
                             if($number_of_incomes > 0) {
                               while($incomes = $query_result->fetch_assoc()) {
@@ -77,7 +87,6 @@
                             else {
                               $_SESSION['e_payment_methods'] = "Nie ma wydatków do wyświetlenia.";
                             }
-                            
                           }
                           else
                           {
@@ -87,8 +96,10 @@
                             $sum_of_incomes = $query_result->fetch_assoc();  
                             echo '<tr><td colspan="3">Razem</td><td id="totalincomes">'.$sum_of_incomes["sum_of_incomes"].'</td></tr>';
                           }
-
-                          
+                          else
+                          {
+                            throw new Exception($db_connection->error);
+                          }
                           $db_connection->close();
                         }
                       }
@@ -126,22 +137,22 @@
                             {
                             throw new Exception(mysqli_connect_errno());
                             }
-                            else
-                            {
-                            if ($query_result = $db_connection->query(sprintf("SELECT e.expense_comment, ( SELECT c.name FROM expenses_category_assigned_to_users AS c WHERE c.id = e.expense_category_assigned_to_user_id ) AS category, ( SELECT p.name FROM payment_methods_assigned_to_users AS p WHERE p.id = e.payment_method_assigned_to_user_id ) AS payment, e.date_of_expense, e.amount FROM expenses AS e WHERE user_id = '%s'", mysqli_real_escape_string($db_connection, $_SESSION['id'])))) {
-                                $number_of_expenses = $query_result->num_rows;
-                                if($number_of_expenses > 0) {
-                                while($expenses = $query_result->fetch_assoc()) {
-                                    echo '<tr><td>'.$expenses["expense_comment"].'</td><td>'.$expenses["payment"].'</td><td>'.$expenses["category"].'</td><td>'.$expenses["date_of_expense"].'</td><td>'.$expenses["amount"];
+                            else {
+
+                                $get_expenses = "SELECT e.expense_comment, ( SELECT c.name FROM expenses_category_assigned_to_users AS c WHERE c.id = e.expense_category_assigned_to_user_id ) AS category, ( SELECT p.name FROM payment_methods_assigned_to_users AS p WHERE p.id = e.payment_method_assigned_to_user_id ) AS payment, e.date_of_expense, e.amount FROM expenses AS e WHERE (e.date_of_expense BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id' ";
+                    
+                                if ($query_result = $db_connection->query("$get_expenses")) {
+                                    $number_of_expenses = $query_result->num_rows;
+                                    if($number_of_expenses > 0) {
+                                        while($expenses = $query_result->fetch_assoc()) {
+                                            echo '<tr><td>'.$expenses["expense_comment"].'</td><td>'.$expenses["payment"].'</td><td>'.$expenses["category"].'</td><td>'.$expenses["date_of_expense"].'</td><td>'.$expenses["amount"];
+                                        }
+                                    }
+                                    else {
+                                    $_SESSION['e_payment_methods'] = "Nie ma wydatków do wyświetlenia.";
+                                    }
                                 }
-                                }
-                                else {
-                                $_SESSION['e_payment_methods'] = "Nie ma wydatków do wyświetlenia.";
-                                }
-                                
-                            }
-                            else
-                            {
+                            else {
                                 throw new Exception($db_connection->error);
                             }
                             if ($query_result = $db_connection->query(sprintf("SELECT SUM(amount) AS sum_of_expenses FROM expenses WHERE user_id='%s'", mysqli_real_escape_string($db_connection, $_SESSION['id'])))) {

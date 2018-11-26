@@ -6,7 +6,10 @@
 	{
 		header('Location: index.php');
 		exit();
-	}
+  }
+  
+  $_SESSION['start_date'] = "1970-01-01";
+  $_SESSION['end_date'] = $currentdate = date('Y-m-d');
 	
 ?>
 

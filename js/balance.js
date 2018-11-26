@@ -4,7 +4,7 @@ var balance = totalincomes - totalexpenses;
 
 $('#summary').html('Twój bilans to: ' + balance + " zł");
 
-if(totalincomes<totalexpenses) {
+if(balance < 0) {
     $('#comment').html('Uważaj, wpadasz w długi!');
     $('#comment').css('color', '#ff0000');
 }

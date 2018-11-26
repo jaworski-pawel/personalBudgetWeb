@@ -197,7 +197,6 @@
                               $successful_validation = false;
                               $_SESSION['e_payment_methods'] = "Nie udało się pobrać metod płatności z bazy danych";
                             }
-                            
                           }
                           else
                           {
