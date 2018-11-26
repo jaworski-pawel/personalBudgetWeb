@@ -84,7 +84,7 @@
     // Comment validation
     $comment = $_POST['comment'];
 
-    if ((strlen($comment) < 2) || (strlen($comment) >100)) {
+    if ((strlen($comment) < 2) || (strlen($comment) > 100)) {
       $successful_validation = false;
       $_SESSION['e_comment'] = "Komentarz powienien zawierać od 2 do 100 znaków!";
     }

@@ -15,7 +15,7 @@ function drawChart() {
 if(window.innerWidth>992) {
   var options = {
     'backgroundColor':'transparent',
-    'title':'Wydatki',
+    'title':'Przychody',
     'width':1200,
     'height':500,
     'legend': {'textStyle': {'color':'#ffffff'}},
@@ -25,7 +25,7 @@ if(window.innerWidth>992) {
 else if(window.innerWidth>768) {
   var options = {
     'backgroundColor':'transparent',
-    'title':'Wydatki',
+    'title':'Przychody',
     'width':900,
     'height':400,
     'legend': {'textStyle': {'color':'#ffffff'}},
@@ -35,7 +35,7 @@ else if(window.innerWidth>768) {
 else if(window.innerWidth>576) {
   var options = {
     'backgroundColor':'transparent',
-    'title':'Wydatki',
+    'title':'Przychody',
     'width':700,
     'height':300,
     'legend': {'textStyle': {'color':'#ffffff'}},
