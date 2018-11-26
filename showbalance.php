@@ -38,7 +38,7 @@
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
                   <li><a href="showbalancefromcurrentmonth.php">Bieżący miesiąc</a></li>
                   <li><a href="#">Poprzedni miesiąc</a></li>
-                  <li><a href="#">Bieżący rok</a></li>
+                  <li><a href="showbalancefromcurrentyear.php">Bieżący rok</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="#">Niestandardowe</a></li>
                 </ul>
@@ -92,8 +92,9 @@
                           {
                             throw new Exception($db_connection->error);
                           }
-                          if ($query_result = $db_connection->query(sprintf("SELECT SUM(amount) AS sum_of_incomes FROM incomes WHERE user_id='%s'", mysqli_real_escape_string($db_connection, $_SESSION['id'])))) {
-                            $sum_of_incomes = $query_result->fetch_assoc();  
+                          $get_sum_of_incomes = "SELECT SUM(amount) AS sum_of_incomes FROM incomes WHERE (date_of_income BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id'";
+                          if ($query_result = $db_connection->query("$get_sum_of_incomes")) {
+                            $sum_of_incomes = $query_result->fetch_assoc();
                             echo '<tr><td colspan="3">Razem</td><td id="totalincomes">'.$sum_of_incomes["sum_of_incomes"].'</td></tr>';
                           }
                           else
@@ -155,12 +156,15 @@
                             else {
                                 throw new Exception($db_connection->error);
                             }
-                            if ($query_result = $db_connection->query(sprintf("SELECT SUM(amount) AS sum_of_expenses FROM expenses WHERE user_id='%s'", mysqli_real_escape_string($db_connection, $_SESSION['id'])))) {
-                                $sum_of_incomes = $query_result->fetch_assoc();  
-                                echo '<tr><td colspan="4">Razem</td><td id="totalexpenses">'.$sum_of_incomes["sum_of_expenses"].'</td></tr>';
+                            $get_sum_of_expenses = "SELECT SUM(amount) AS sum_of_expenses FROM expenses WHERE (date_of_expense BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id'";
+                            if ($query_result = $db_connection->query("$get_sum_of_expenses")) {
+                                $sum_of_expenses = $query_result->fetch_assoc();
+                                echo '<tr><td colspan="4">Razem</td><td id="totalexpenses">'.$sum_of_expenses["sum_of_expenses"].'</td></tr>';
                             }
-
-                            
+                            else
+                            {
+                                throw new Exception($db_connection->error);
+                            }
                             $db_connection->close();
                             }
                         }
