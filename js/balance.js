@@ -1,6 +1,6 @@
 var totalincomes = $('#totalincomes').text();
 var totalexpenses = $('#totalexpenses').text();
-var balance = totalincomes - totalexpenses;
+var balance = (totalincomes - totalexpenses).toFixed(2);
 
 $('#summary').html('Twój bilans to: ' + balance + " zł");
 

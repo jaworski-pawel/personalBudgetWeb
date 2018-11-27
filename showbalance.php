@@ -40,7 +40,7 @@
                   <li><a href="showbalancefrompreviousmonth.php">Poprzedni miesiąc</a></li>
                   <li><a href="showbalancefromcurrentyear.php">Bieżący rok</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#">Niestandardowe</a></li>
+                  <li><a href="showbalancefromselectedperiod.php">Niestandardowe</a></li>
                 </ul>
             </div>
                 <table class="table table-bordered">
