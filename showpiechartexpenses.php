@@ -29,7 +29,7 @@ require_once "connect.php";
       throw new Exception(mysqli_connect_errno());
     }
     else {
-        $get_sum_of_categories = "SELECT ( SELECT c.name FROM incomes_category_assigned_to_users AS c WHERE c.id = i.income_category_assigned_to_user_id ) AS category, SUM(i.amount) AS sum_of_category FROM incomes AS i WHERE (date_of_income BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id' GROUP BY category";
+        $get_sum_of_categories = "SELECT ( SELECT c.name FROM expenses_category_assigned_to_users AS c WHERE c.id = e.expense_category_assigned_to_user_id ) AS category, SUM(e.amount) AS sum_of_category FROM expenses AS e WHERE (date_of_expense BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id' GROUP BY category";
 
         if ($query_result = $db_connection->query("$get_sum_of_categories")) {
             $number_of_categories = $query_result->num_rows;
@@ -56,7 +56,7 @@ echo <<<EOL
     if(window.innerWidth>992) {
         var options = {
             'backgroundColor':'transparent',
-            'title':'Przychody',
+            'title':'Wydatki',
             'width':1200,
             'height':500,
             'legend': {'textStyle': {'color':'#ffffff'}},
@@ -66,7 +66,7 @@ echo <<<EOL
     else if(window.innerWidth>768) {
         var options = {
             'backgroundColor':'transparent',
-            'title':'Przychody',
+            'title':'Wydatki',
             'width':900,
             'height':400,
             'legend': {'textStyle': {'color':'#ffffff'}},
@@ -76,7 +76,7 @@ echo <<<EOL
     else if(window.innerWidth>576) {
         var options = {
             'backgroundColor':'transparent',
-            'title':'Przychody',
+            'title':'Wydatki',
             'width':700,
             'height':300,
             'legend': {'textStyle': {'color':'#ffffff'}},
@@ -87,13 +87,13 @@ echo <<<EOL
         // Optional; add a title and set the width and height of the chart
         var options = {
             'backgroundColor':'transparent',
-            'title':'Przychody',
+            'title':'Wydatki',
             'legend': {'textStyle': {'color':'#ffffff'}},
             'titleTextStyle': {'color':'#ffffff'}
         }
     }
     // Display the chart inside the <div> element with id="piechart"
-    var chart = new google.visualization.PieChart(document.getElementById('piechartincomes'));
+    var chart = new google.visualization.PieChart(document.getElementById('piechartexpenses'));
     chart.draw(data, options);
 }
 

@@ -93,9 +93,11 @@
         </div>
     </footer>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
-    <script type="text/javascript" src="js/piechartexpenses.js"></script> 
     <?php    
        require_once "showpiechartincomes.php";
+    ?>
+      <?php    
+       require_once "showpiechartexpenses.php";
     ?>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
