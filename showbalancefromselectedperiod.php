@@ -43,7 +43,7 @@
               $good_start_date = false;
               $_SESSION['e_start_date'] = "Data nie może być z przyszłości!";
             }
-            elseif($month = $currentmonth) {
+            elseif($month == $currentmonth) {
               if($day > $currentday) {
                 $good_start_date = false;
                 $_SESSION['e_start_date'] = "Data nie może być z przyszłości!";

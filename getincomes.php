@@ -31,9 +31,6 @@
             echo '<tr><td>'.$incomes["income_comment"].'</td><td>'.$incomes["category"].'</td><td>'.$incomes["date_of_income"].'</td><td>'.$incomes["amount"];
           }
         }
-        else {
-          $_SESSION['e_payment_methods'] = "Nie ma wydatków do wyświetlenia.";
-        }
       }
       else {
         throw new Exception($db_connection->error);

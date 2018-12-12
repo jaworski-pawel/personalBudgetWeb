@@ -67,13 +67,6 @@
       }
     }
 
-    //Category id validation
-    $category_id = $_POST['category'];
-    if(!(preg_match('/^[0-9]$/', $category_id))) {
-      $successful_validation = false;
-      $_SESSION['e_category'] = "Błędna kategoria";
-    }
-
     // Comment validation
     $comment = $_POST['comment'];
 

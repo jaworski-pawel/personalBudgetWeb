@@ -23,9 +23,6 @@
             echo '<tr><td>'.$expenses["expense_comment"].'</td><td>'.$expenses["payment"].'</td><td>'.$expenses["category"].'</td><td>'.$expenses["date_of_expense"].'</td><td>'.$expenses["amount"];
           }
         }
-        else {
-          $_SESSION['e_payment_methods'] = "Nie ma wydatków do wyświetlenia.";
-        }
       }
       else {
         throw new Exception($db_connection->error);
