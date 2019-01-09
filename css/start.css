@@ -1,0 +1,47 @@
+body {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 400;
+  line-height: 30px !important;
+  background-image: url("../img/money.jpg");
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+@media only screen and (max-width: 960px) {
+  body {
+    background-size: auto;
+  }
+}
+
+.well {
+  background-color: rgb(244, 243, 239) !important;
+  border-radius: 10px !important;
+  margin-top: 10%;
+}
+
+.btn {
+  border-radius: 30px !important;
+  margin: 10px;
+  border-style: none;
+  text-transform: uppercase;
+}
+
+.input-group {
+  margin: 10px !important;
+}
+
+.glyphicon {
+  margin-right: 10px;
+}
+
+.modal-dialog {
+  margin-top: 12% !important;
+}
+
+.footer {
+  color: rgb(144, 144, 144);
+  background-color: rgb(33, 33, 32) !important;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}

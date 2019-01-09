@@ -20,7 +20,7 @@
         $number_of_expenses = $query_result->num_rows;
         if($number_of_expenses > 0) {
           while($expenses = $query_result->fetch_assoc()) {
-            echo '<tr><td>'.$expenses["expense_comment"].'</td><td>'.$expenses["payment"].'</td><td>'.$expenses["category"].'</td><td>'.$expenses["date_of_expense"].'</td><td>'.$expenses["amount"];
+            echo '<tr><td>'.$expenses["category"].'</td><td>'.$expenses["payment"].'</td><td>'.$expenses["date_of_expense"].'</td><td>'.$expenses["expense_comment"].'</td><td>'.$expenses["amount"];
           }
         }
       }

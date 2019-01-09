@@ -58,9 +58,7 @@ echo <<<EOL
             'backgroundColor':'transparent',
             'title':'Przychody',
             'width':1200,
-            'height':500,
-            'legend': {'textStyle': {'color':'#ffffff'}},
-            'titleTextStyle': {'color':'#ffffff'}
+            'height':500
         }
     }
     else if(window.innerWidth>768) {
@@ -68,9 +66,7 @@ echo <<<EOL
             'backgroundColor':'transparent',
             'title':'Przychody',
             'width':900,
-            'height':400,
-            'legend': {'textStyle': {'color':'#ffffff'}},
-            'titleTextStyle': {'color':'#ffffff'}
+            'height':400
         }
     }
     else if(window.innerWidth>576) {
@@ -78,18 +74,14 @@ echo <<<EOL
             'backgroundColor':'transparent',
             'title':'Przychody',
             'width':700,
-            'height':300,
-            'legend': {'textStyle': {'color':'#ffffff'}},
-            'titleTextStyle': {'color':'#ffffff'}
+            'height':300
         }
     }
     else {
         // Optional; add a title and set the width and height of the chart
         var options = {
             'backgroundColor':'transparent',
-            'title':'Przychody',
-            'legend': {'textStyle': {'color':'#ffffff'}},
-            'titleTextStyle': {'color':'#ffffff'}
+            'title':'Przychody'
         }
     }
     // Display the chart inside the <div> element with id="piechart"

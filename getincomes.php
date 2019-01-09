@@ -22,13 +22,13 @@
       $start_date = mysqli_real_escape_string($db_connection, $_SESSION['start_date']);
       $end_date = mysqli_real_escape_string($db_connection, $_SESSION['end_date']);
       $user_id = mysqli_real_escape_string($db_connection, $_SESSION['id']);
-      $get_incomes = "SELECT i.income_comment, c.name AS category, i.date_of_income, i.amount FROM incomes AS i NATURAL JOIN incomes_category_assigned_to_users AS c WHERE (i.date_of_income BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id' ";
+      $get_incomes = "SELECT i.income_comment, ( SELECT c.name FROM incomes_category_assigned_to_users AS c WHERE c.id = i.income_category_assigned_to_user_id ) AS category, i.date_of_income, i.amount FROM incomes AS i WHERE (i.date_of_income BETWEEN '$start_date' AND '$end_date') AND user_id = '$user_id' ";
                         
       if ($query_result = $db_connection->query("$get_incomes")) {
         $number_of_incomes = $query_result->num_rows;
         if($number_of_incomes > 0) {
           while($incomes = $query_result->fetch_assoc()) {
-            echo '<tr><td>'.$incomes["income_comment"].'</td><td>'.$incomes["category"].'</td><td>'.$incomes["date_of_income"].'</td><td>'.$incomes["amount"];
+            echo '<tr><td>'.$incomes["category"].'</td><td>'.$incomes["date_of_income"].'</td><td>'.$incomes["income_comment"].'</td><td>'.$incomes["amount"];
           }
         }
       }
